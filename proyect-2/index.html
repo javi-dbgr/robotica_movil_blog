@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>exercise 1</title>
+  <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.6/build/pure-min.css" integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aehk5" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.6/build/grids-responsive-min.css">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+  <div id="layout">
+    <div id="main">
+      <div class="header">
+        <h1>Formula 1 controller</h1>
+        <h2>a reactive approach</h2>
+      </div>
+
+      <div class="content">
+
+        <h2 class="content-subhead">First step: color segmentation</h2>
+        <p>
+          The first thing I needed to do was to apply a color segmentation
+          to the input image, in order to detect the red line.
+        </p>
+
+        <img class="pure-img-responsive" src="images/image_1.png" alt="filtered red line">
+
+        <h2 class="content-subhead">Selecting a portion of the image</h2>
+        <p>
+          For the line coordinates(in pixels) to be calculated, a portion
+          of the image has to be selected:
+        </p>
+
+        <img class="pure-img-responsive" src="images/image_2.png" alt="selected portion">
+
+        <h2 class="content-subhead">Calculating the center of mass</h2>
+
+        <p>
+          "cv2.moments()" does this, returning the coordinates in pixels.
+          I then printed them in the image for clarity:
+        </p>
+
+        <img class="pure-img-responsive" src="images/image_3.png" alt="center of mass">
+
+        <h2 class="content-subhead">Getting the error</h2>
+
+        <p>
+            The error is simply the x coordinate of the pixels that
+            are in the middle of the image minus the x coordinate of
+            the center of mass:
+        </p>
+
+        <img class="pure-img-responsive" src="images/image_4.png" alt="error">
+
+        <h2 class="content-subhead">proportional control on angular velocity</h2>
+
+        <p>
+            Keeping the linear velocity constant and low, I implemented
+            the proportional controller, and tweaked the constant until
+            I had almost no oscilation. Then I kept increasing the speed
+            until the p controller couldn't handle by itself.
+            velocity = w_K_p * error
+        </p>
+
+        <h2 class="content-subhead">Adding the derivative part</h2>
+
+        <p>
+            Then I implemented the derivative part, simply by adding
+            the difference of errors multiplied by a constant:
+            velocity = w_K_p * error + w_K_d * (error - last_error).
+            I spent quite some time tweaking the constants while
+            increasing the speed until it couldn't handle more of it.
+        </p>
+
+        <h2 class="content-subhead">Adding the proportional control to the linear velocity</h2>
+
+        <p>
+            I did a linear function that takes the error and returns a
+            velocity. If the error is less that a certain threshold, it returns
+            the max velocity. If the error is bigger that another threshold,
+            it returns the velocity that the pd controller of the angular
+            velocity can tolerate. I also added a "smoother" that prevents
+            abrupt changes in the velocity.
+        </p>
+
+        <h2 class="content-subhead">Video demonstration</h2>
+
+        <iframe width="853" height="480" src="https://www.youtube.com/embed/sNXn-pRh_7c" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+        <p>
+            I managed to stop the clock at ~1.33.
+        </p>
+      </div>
+    </div>
+  </div>
+  <script src="../../ui.js"></script>
+</body>
+</html>
