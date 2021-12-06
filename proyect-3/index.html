@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>exercise 3</title>
+  <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.6/build/pure-min.css" integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aehk5" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.6/build/grids-responsive-min.css">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+  <div id="layout">
+    <div id="main">
+      <div class="header">
+        <h1>Obstacle avoidance F1 car</h1>
+        <h2>VFF approach</h2>
+      </div>
+
+      <div class="content">
+
+        <h2 class="content-subhead">Vectors involved</h2>
+        <p>
+          To implement this algorithm, 3 vectors have to be calculated:
+          An atractive(green), a repulsive(red), and the total vector(black).
+        </p>
+
+        <img class="pure-img-responsive" src="images/image_1.png" alt="selected portion">
+
+        <h2 class="content-subhead">Repulsive vector</h2>
+        <p>
+          In order to calculate the repulsive vector, each laser measure
+          has to be scaled according to the distance measured, and
+          then all of them are added up.
+        </p>
+        <p>
+            A hyperbole is in charge of scaling each measure:
+        </p>
+
+        <img class="pure-img-responsive" src="images/image_2.png" alt="selected portion">
+        <p>
+            The closer the obstacle is, the more it influences the sum,
+            but with two thresholds: if its to far, it returns 0.
+            If it is in a certain close range, it returns the same
+            large value(does not tend to infinite).
+            Moreover, I only kept the part of the vector that is
+            perpendicular to the direction of movement. The other
+            component is set to 0.
+        </p>
+
+        <h2 class="content-subhead">Atractive vector</h2>
+
+        <p>
+          In order for atractive vector to be calculated, the absolute
+          coordinates of the car must be subtracted from the absolute
+          coordinates of the goal, and if the new coordinate system is
+          rotated, then the vector has to be rotated with opposite sign,
+          to take that into account.
+        </p>
+        <p>
+            Then, the resulting value has to be scaled properly, using
+            the following function:
+        </p>
+
+        <img class="pure-img-responsive" src="images/image_3.png" alt="center of mass">
+
+        <h2 class="content-subhead">Total vector</h2>
+
+        <p>
+         Once the vectors have been calculated, they are added with a
+         individual weight. This constants, like everything else, have
+         to be tweaked through trial and error.
+        </p>
+
+        <h2 class="content-subhead">Commanding to the motors</h2>
+
+        <p>
+         Now we have a vector that indicates where the robot should go,
+         but the motors need a speed command, so we need to translate
+         the vector to motor commands.
+        </p>
+        <p>
+            For the angular velocity, I implemented a pd controller,
+            where the error was the angle between the vector and
+            the current direction of movement. The linear velocity
+            was kept constant.
+        </p>
+
+      </div>
+    </div>
+  </div>
+  <script src="../../ui.js"></script>
+</body>
+</html>
