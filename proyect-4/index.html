@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>exercise 4</title>
+  <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.6/build/pure-min.css" integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aehk5" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.6/build/grids-responsive-min.css">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+  <div id="layout">
+    <div id="main">
+      <div class="header">
+        <h1>Global navigation</h1>
+        <h2>a GPP approach</h2>
+      </div>
+
+      <div class="content">
+
+        <h2 class="content-subhead">Extra cost caused by the obstacles</h2>
+        <p>
+            The first thing I did was to create a cost map with the extra
+            cost caused by the walls. The algorithm is the following:
+            <ul>
+                <li> Iterate through all points without a wall </li>
+                <li> Check if at least one of his neighbors is a wall. </li>
+                <li> If this is true, sum some cost to the point</li>
+                <li> Do this taking neighbors at different depths</li>
+            </ul>
+        </p>
+
+        <img class="pure-img-responsive" src="images/image_1.png" alt="cost map 1">
+
+        <h2 class="content-subhead">Wave Front Algorithm</h2>
+        <p>
+            The algorithm that I used is the following:
+            <ul>
+                <li>Pop a node from a fifo queue</li>
+                <li>If it is the start node, set the done flag to True</li>
+                <li>Take its neighbors</li>
+                <li>Iterate over them. Calculate the cost for each one.
+                If it does not have any value yet, or if the calculated cost
+                is lower, assign it to the node and push it to the queue.</li>
+            </ul>
+        </p>
+
+        <img class="pure-img-responsive" src="images/image_2.png" alt="cost map 2">
+
+        <h2 class="content-subhead">Combining both cost maps</h2>
+
+        <p>
+            In order to obtain the total cost map, the previous cost maps
+            are added:
+        </p>
+
+        <img class="pure-img-responsive" src="images/image_3.png" alt="total cost map">
+
+        <h2 class="content-subhead">Controlling the car</h2>
+        <p>
+            In order for the car to reach the goal, I did the following:
+            <ul>
+                <li>I took the neighbor with the lower cost from all
+                    neighbors with a depth of 3</li>
+                <li>I calculated a vector from the car node to that neighbor</li>
+                <li>I calculated the angle difference between that vector
+                    and the positive x of the car base.</li>
+                <li>I applied a proportional controller with that error
+                    to the linear and angular velocity.</li>
+            </ul>
+        </p>
+
+        <p>
+            Here is a video demonstration:
+        </p>
+        <iframe width="853" height="480" src="https://www.youtube.com/embed/Zi8x9RPo_fE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+      </div>
+    </div>
+  </div>
+  <script src="../../ui.js"></script>
+</body>
+</html>
