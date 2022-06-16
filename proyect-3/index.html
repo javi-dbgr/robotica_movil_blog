@@ -18,10 +18,13 @@
 
       <div class="content">
 
-        <h2 class="content-subhead">Vectors involved</h2>
+        <h2 class="content-subhead">VFF basic explanation</h2>
         <p>
-          To implement this algorithm, 3 vectors have to be calculated:
-          An atractive(green), a repulsive(red), and the total vector(black).
+          <ul>
+            <li> Targets generate an attractive force on the robot (green) </li>
+            <li> Obstacles generate a repulsive force on the robot (red) </li>
+            <li> Adding them with weights you get a vector that guides the robot correctly (black) </li>
+        </ul>
         </p>
 
         <img class="pure-img-responsive" src="images/image_1.png" alt="selected portion">
@@ -70,20 +73,42 @@
          individual weight. This constants, like everything else, have
          to be tweaked through trial and error.
         </p>
+        <img class="pure-img-responsive" src="images/carbon.svg" alt="code">
+
+        <p>
+          Now we have a vector that indicates where the robot should go, but the car actuators
+          don't understand it, so we need to interpret it and send the correct commands to the car
+          (velocity commands).
+         </p>
 
         <h2 class="content-subhead">Commanding to the motors</h2>
 
         <p>
-         Now we have a vector that indicates where the robot should go,
-         but the motors need a speed command, so we need to translate
-         the vector to motor commands.
+          Linear velocity: since we always want to go forward, we hold it constant.
         </p>
         <p>
-            For the angular velocity, I implemented a pd controller,
-            where the error was the angle between the vector and
-            the current direction of movement. The linear velocity
-            was kept constant.
+            For the angular velocity, first I calculated the angle between the computed vector
+            and the vector that points to the currect direction of the car. Then I thought of passing
+            it to a linear function that returned the angle velocity, but it performed poorly so I swithed
+            to a pd controller, where the error was the angle previously mentioned.
         </p>
+
+        <h2 class="content-subhead">The problem</h2>
+        <iframe width="853" height="480" src="https://www.youtube.com/embed/vP1g82__cLw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <p>
+          The car kept crashing with the second car. The problem was that it considered the
+          objectives achieved from too far away, so I changed that for the beginning of the simulation.
+        </p>
+        
+        <br>
+        
+        <h1 style="text-align: center" class="content-subhead">Final result</h1>
+        <iframe width="853" height="480" src="https://www.youtube.com/embed/aNexIONkvS8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <iframe width="853" height="480" src="https://www.youtube.com/embed/LfQkjF_lWMs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <p>
+          In case is too fast, the pov at real time:
+        </p>
+        <iframe width="853" height="480" src="https://www.youtube.com/embed/SlDNFS0XNXQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
       </div>
     </div>
